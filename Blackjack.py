@@ -386,10 +386,12 @@ class Player(metaclass=abc.ABCMeta):
     def move_cards(self):
         x = int(input("Choose a card to move: "))
         if x not in range(self.hand.get_len()):
-            return "ERROR: x not in range"
+            print("ERROR: x not in range")
+            return
         y = int(input("Choose where to move it: "))
         if y not in range(self.hand.get_len()+1):
-            return "ERROR: y not in range"
+            print("ERROR: y not in range")
+            return
         self.hand.move(x, y)
 
     def sort(self):
@@ -464,7 +466,7 @@ class BlackJackPlayer(Player):
         self.splits = [Split()]
         self.view = {
             'm': self.bj_move_cards,
-            'l': self.bj_look
+            'l': self.look
         }
         self.actions = {
             'h': self.hit,
@@ -534,7 +536,7 @@ class BlackJackPlayer(Player):
         if self.get_value() == 21:
             self.inc_split()
 
-    def bj_look(self):
+    def look(self):
         print("look")
         print("current split:", self.current_split)
         print("cards in split:", self.get_len())
@@ -544,10 +546,12 @@ class BlackJackPlayer(Player):
     def bj_move_cards(self):
         x = int(input("Choose a card to move: "))
         if x not in range(self.splits[self.current_split].hand.get_len()):
-            return "ERROR: x not in range"
+            print("ERROR: x not in range")
+            return
         y = int(input("Choose where to move it: "))
         if y not in range(self.splits[self.current_split].hand.get_len() + 1):
-            return "ERROR: y not in range"
+            print("ERROR: y not in range")
+            return
         self.splits[self.current_split].hand.move(x, y)
 
     def stay(self):
@@ -614,3 +618,8 @@ class BlackJackPlayer(Player):
         self.points += multiplier * self.bet * (2 ** (self.splits[self.current_split].doubles - 1))
         self.rm_split()
         print("Total Cash:", self.points)
+
+#A = BlackJack(1000)
+#A.add_player("Jack")
+#A.add_player("Ann")
+#A.start_game()
